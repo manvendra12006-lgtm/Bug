@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSCMKN Tracker | Secure Terminal</title>
+    <title>MSCMKN Tracker | Multi-Scope Database</title>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/manvendra12006-lgtm/Bug-Tracker/main/Gemini_Generated_Image_jrs0z8jrs0z8jrs0.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Hacker Background Video */
+        /* Hacker Video Background Persistent */
         #video-bg {
             position: fixed;
             top: 0;
@@ -17,33 +17,22 @@
             height: 100%;
             object-fit: cover;
             z-index: -1;
-            filter: brightness(0.4) contrast(1.1);
+            filter: brightness(0.3) contrast(1.2);
         }
 
-        /* Hacker Vibe Glassmorphism */
-        .hacker-panel {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 0, 0, 0.2);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
-        }
-
-        /* Custom Scrollbar for Hacker UI */
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        /* Severity Styles */
+        .severity-Critical { border-left: 4px solid #ef4444; background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%); }
+        .severity-High { border-left: 4px solid #f97316; background: linear-gradient(90deg, rgba(249, 115, 22, 0.1) 0%, transparent 100%); }
+        .severity-Medium { border-left: 4px solid #eab308; background: linear-gradient(90deg, rgba(234, 179, 8, 0.1) 0%, transparent 100%); }
+        .severity-Low { border-left: 4px solid #3b82f6; background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%); }
+        .severity-Informational { border-left: 4px solid #9ca3af; background: linear-gradient(90deg, rgba(156, 163, 175, 0.1) 0%, transparent 100%); }
+        
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 10px; }
-
-        /* Severity Glows */
-        .severity-Critical { border-left: 4px solid #ef4444; background: linear-gradient(90deg, rgba(239, 68, 68, 0.15) 0%, transparent 100%); }
-        .severity-High { border-left: 4px solid #f97316; background: linear-gradient(90deg, rgba(249, 115, 22, 0.15) 0%, transparent 100%); }
-        .severity-Medium { border-left: 4px solid #eab308; background: linear-gradient(90deg, rgba(234, 179, 8, 0.15) 0%, transparent 100%); }
-        .severity-Low { border-left: 4px solid #3b82f6; background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%); }
-
-        /* Responsive Mobile Fixes */
-        @media (max-width: 768px) {
-            .stats-grid { grid-template-cols: repeat(2, 1fr); }
-            .hide-mobile { display: none; }
-        }
+        
+        /* Glass Panels for Video Visibility */
+        .glass-panel { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
 
         .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -53,108 +42,118 @@
         input:checked + .slider:before { transform: translateX(20px); }
     </style>
 </head>
-<body class="bg-black text-gray-100 min-h-screen custom-scroll font-sans overflow-x-hidden">
+<body class="bg-black text-gray-100 min-h-screen custom-scroll overflow-x-hidden">
 
     <video autoplay muted loop playsinline id="video-bg">
         <source src="https://raw.githubusercontent.com/manvendra12006-lgtm/Bug-Tracker/main/6994754-uhd_3840_2160_25fps.mp4" type="video/mp4">
     </video>
 
     <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="hacker-panel p-8 rounded-2xl w-full max-w-md border-t-2 border-red-600">
-            <h1 class="text-3xl font-black text-red-500 mb-2 flex items-center gap-2 tracking-tighter"><i class="fas fa-terminal"></i> LOGIN_UNITS</h1>
-            <p class="text-gray-400 mb-6 font-mono text-xs uppercase tracking-[0.2em]">Authorized Personnel Only</p>
-            <input type="email" id="login-email" placeholder="OPERATOR_ID" class="w-full bg-black/40 border border-gray-700 p-3 rounded mb-4 focus:outline-none focus:border-red-500 transition-all font-mono">
-            <input type="password" id="login-pass" placeholder="ACCESS_KEY" class="w-full bg-black/40 border border-gray-700 p-3 rounded mb-6 focus:outline-none focus:border-red-500 transition-all font-mono">
-            <button id="btn-login" class="w-full bg-red-700 hover:bg-red-600 text-white font-black py-3 rounded transition-all tracking-[0.3em] uppercase shadow-lg shadow-red-900/20">Init Session</button>
+        <div class="glass-panel p-8 rounded-2xl shadow-2xl w-full max-w-md">
+            <h1 class="text-3xl font-bold text-red-500 mb-2 flex items-center gap-2"><i class="fas fa-user-secret"></i> TERMINAL</h1>
+            <p class="text-gray-400 mb-6 font-mono text-sm tracking-tighter">MSCMKN_SECURE_LOGIN</p>
+            <input type="email" id="login-email" placeholder="Operator Email" class="w-full bg-gray-800/50 border border-gray-700 p-3 rounded mb-4 focus:outline-none focus:border-red-500 transition-all">
+            <input type="password" id="login-pass" placeholder="Access Key" class="w-full bg-gray-800/50 border border-gray-700 p-3 rounded mb-6 focus:outline-none focus:border-red-500 transition-all">
+            <button id="btn-login" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded transition-all tracking-widest uppercase">Start Session</button>
         </div>
     </div>
 
     <div id="choice-screen" class="hidden fixed inset-0 z-40 flex items-center justify-center p-4">
         <div class="text-center max-w-2xl w-full">
-            <h2 class="text-2xl font-black mb-8 tracking-[0.4em] uppercase text-white">Select <span class="text-red-500">Operation</span></h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <button onclick="setScope('web_findings')" class="group p-10 hacker-panel rounded-3xl hover:border-red-500 transition-all text-left">
-                    <i class="fas fa-globe text-4xl text-red-600 mb-4 group-hover:drop-shadow-[0_0_10px_rgba(220,38,38,0.8)]"></i>
-                    <h3 class="text-xl font-bold mb-2 uppercase text-white">Web Tracker</h3>
-                    <p class="text-xs text-gray-500 font-mono tracking-tighter">NETWORK_SEC_LOGS</p>
+            <h2 class="text-2xl font-black mb-8 tracking-widest uppercase">Select <span class="text-red-500">Operation Scope</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <button onclick="setScope('web_findings')" class="group p-8 glass-panel rounded-3xl hover:border-red-500 transition-all text-left">
+                    <i class="fas fa-globe text-4xl text-red-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-bold mb-2 uppercase">Web Tracker</h3>
+                    <p class="text-xs text-gray-500">Web Vulnerability Database</p>
                 </button>
-                <button onclick="setScope('android_findings')" class="group p-10 hacker-panel rounded-3xl hover:border-red-500 transition-all text-left">
-                    <i class="fab fa-android text-4xl text-red-600 mb-4 group-hover:drop-shadow-[0_0_10px_rgba(220,38,38,0.8)]"></i>
-                    <h3 class="text-xl font-bold mb-2 uppercase text-white">Android Tracker</h3>
-                    <p class="text-xs text-gray-500 font-mono tracking-tighter">MOBILE_SEC_LOGS</p>
+                <button onclick="setScope('android_findings')" class="group p-8 glass-panel rounded-3xl hover:border-red-500 transition-all text-left">
+                    <i class="fab fa-android text-4xl text-red-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-bold mb-2 uppercase">Android Tracker</h3>
+                    <p class="text-xs text-gray-500">Mobile Vulnerability Database</p>
                 </button>
             </div>
+            <button onclick="signOutBtn()" class="mt-8 text-gray-600 hover:text-red-500 text-xs uppercase tracking-widest">Abort Session</button>
         </div>
     </div>
 
-    <div id="main-app" class="hidden">
-        <header class="border-b border-red-900/30 p-4 bg-black/60 backdrop-blur-xl sticky top-0 z-30">
+    <div id="main-app" class="hidden relative z-10">
+        <header class="border-b border-gray-800 p-4 bg-black/50 backdrop-blur-md sticky top-0 z-30">
             <div class="max-w-[1600px] mx-auto flex justify-between items-center">
                 <div class="flex items-center gap-3">
-                    <div id="scope-icon" class="text-red-600 text-2xl"></div>
+                    <div id="scope-icon" class="bg-red-600 p-2 rounded-lg text-white"></div>
                     <div>
-                        <h2 class="text-md md:text-lg font-black tracking-tighter uppercase text-white">MSCMKN <span class="text-red-600">Term</span></h2>
-                        <p id="scope-label" class="text-[8px] font-mono text-gray-500 tracking-[0.2em]"></p>
+                        <h2 class="text-lg font-black tracking-tighter uppercase">MSCMKN <span class="text-red-500">Tracker</span></h2>
+                        <p id="scope-label" class="text-[9px] font-mono text-gray-500 uppercase tracking-widest"></p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 md:gap-4">
-                    <select id="earnings-period" onchange="renderTable()" class="bg-red-950/20 border border-red-900/50 text-[10px] text-red-400 p-1 rounded uppercase font-bold outline-none">
-                        <option value="30">30D</option><option value="90">3M</option><option value="all" selected>ALL</option>
-                    </select>
-                    <button onclick="switchScope()" class="text-[9px] bg-white/5 border border-white/10 px-2 py-1 rounded text-white uppercase font-bold">Switch</button>
-                    <button id="btn-logout" class="text-red-600 text-sm"><i class="fas fa-power-off"></i></button>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center bg-gray-900 border border-gray-800 rounded-lg px-2 py-1">
+                        <i class="fas fa-calendar-alt text-gray-500 text-[10px] mr-2"></i>
+                        <select id="earnings-period" onchange="renderTable()" class="bg-transparent text-[10px] text-gray-300 outline-none uppercase font-bold cursor-pointer">
+                            <option value="30">Last 30 Days</option><option value="90">Last 3 Months</option><option value="all" selected>Overall</option>
+                        </select>
+                    </div>
+                    <button onclick="switchScope()" class="text-[10px] text-gray-400 border border-gray-700 px-3 py-1.5 rounded-lg uppercase">Switch</button>
+                    <button id="btn-logout" class="text-gray-500 hover:text-red-400"><i class="fas fa-power-off"></i></button>
                 </div>
             </div>
         </header>
 
-        <main class="max-w-[1600px] mx-auto p-4 md:p-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-3 mb-6 stats-grid">
-                <div class="hacker-panel p-3 rounded-lg"><p class="text-[9px] text-gray-500 uppercase font-bold">Findings</p><p id="stat-total" class="text-lg font-black text-white">0</p></div>
-                <div class="hacker-panel p-3 rounded-lg border-l-2 border-green-500"><p class="text-[9px] text-green-600 uppercase font-bold">Reported</p><p id="stat-reported" class="text-lg font-black">0</p></div>
-                <div class="hacker-panel p-3 rounded-lg border-l-2 border-red-600"><p class="text-[9px] text-red-600 uppercase font-bold">Critical</p><p id="stat-critical" class="text-lg font-black">0</p></div>
-                <div class="hacker-panel p-3 rounded-lg border-l-2 border-orange-500"><p class="text-[9px] text-orange-600 uppercase font-bold">High</p><p id="stat-high" class="text-lg font-black">0</p></div>
-                <div class="hacker-panel p-3 rounded-lg border-l-2 border-yellow-500"><p class="text-[9px] text-yellow-600 uppercase font-bold">Medium</p><p id="stat-medium" class="text-lg font-black">0</p></div>
-                <div class="hacker-panel p-3 rounded-lg border-l-2 border-blue-500"><p class="text-[9px] text-blue-600 uppercase font-bold">Low</p><p id="stat-low-info" class="text-lg font-black">0</p></div>
-                <div class="hacker-panel p-3 rounded-lg"><p class="text-[9px] text-yellow-500 uppercase font-bold">HOF ⭐</p><p id="stat-hof" class="text-lg font-black">0</p></div>
-                <div class="hacker-panel p-3 rounded-lg"><p class="text-[9px] text-blue-400 uppercase font-bold">Certs</p><p id="stat-certs" class="text-lg font-black">0</p></div>
-                <div class="hacker-panel p-3 rounded-lg bg-red-950/20"><p class="text-[9px] text-red-500 uppercase font-bold">Earnings</p><p id="stat-bounty" class="text-lg font-black text-white">₹0</p></div>
+        <section class="max-w-[1600px] mx-auto px-4 md:px-6 pt-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-3">
+                <div class="glass-panel p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold">Total</p><p id="stat-total" class="text-xl font-black text-white">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-green-500"><p class="text-[10px] text-gray-500 uppercase font-bold">Reported</p><p id="stat-reported" class="text-xl font-black text-green-500">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-red-600"><p class="text-[10px] text-gray-500 uppercase font-bold">Critical</p><p id="stat-critical" class="text-xl font-black text-red-600">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-orange-500"><p class="text-[10px] text-gray-500 uppercase font-bold">High</p><p id="stat-high" class="text-xl font-black text-orange-500">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-yellow-500"><p class="text-[10px] text-gray-500 uppercase font-bold">Medium</p><p id="stat-medium" class="text-xl font-black text-yellow-500">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-blue-500"><p class="text-[10px] text-gray-500 uppercase font-bold">Low</p><p id="stat-low-info" class="text-xl font-black text-blue-500">0</p></div>
+                <div class="glass-panel p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold">HOF ⭐</p><p id="stat-hof" class="text-xl font-black text-yellow-400">0</p></div>
+                <div class="glass-panel p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold">Certs</p><p id="stat-certs" class="text-xl font-black text-blue-400">0</p></div>
+                <div class="glass-panel p-3 rounded-xl bg-green-950/20"><p class="text-[10px] text-green-500 uppercase font-bold">Bounty</p><p id="stat-bounty" class="text-xl font-black text-green-400">₹0</p></div>
             </div>
+        </section>
 
+        <main class="max-w-[1600px] mx-auto p-4 md:p-6">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <aside class="lg:col-span-3">
-                    <section class="hacker-panel p-5 rounded-xl sticky top-24">
+                    <section class="glass-panel p-6 sticky top-24 rounded-2xl">
                         <form id="finding-form" class="space-y-3">
                             <input type="hidden" id="edit-id">
-                            <input type="date" id="reportDateInput" required class="w-full bg-black/40 border border-gray-700 p-2 rounded text-xs outline-none">
-                            <input type="text" id="domain" placeholder="domain.com (lowercase)" required class="w-full bg-black/40 border border-gray-700 p-2 rounded text-xs outline-none">
-                            <input type="text" id="program" placeholder="Platform" required class="w-full bg-black/40 border border-gray-700 p-2 rounded text-xs outline-none">
-                            <input type="text" id="type" placeholder="Vuln Type" required class="w-full bg-black/40 border border-gray-700 p-2 rounded text-xs outline-none">
+                            <input type="date" id="reportDateInput" required class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-sm outline-none">
+                            <input type="text" id="domain" placeholder="domain.com (small letters)" required class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-sm outline-none">
+                            <input type="text" id="program" placeholder="Platform Name" required class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-sm outline-none">
+                            <input type="text" id="endpoint" placeholder="Endpoint" class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-sm outline-none">
                             <div class="grid grid-cols-2 gap-2">
-                                <select id="severity" class="bg-black/40 border border-gray-700 p-2 rounded text-[10px] outline-none">
-                                    <option value="Critical">Critical</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option>
-                                </select>
-                                <input type="number" id="bounty" placeholder="₹ Amount" class="bg-black/40 border border-gray-700 p-2 rounded text-xs outline-none">
+                                <select id="severity" class="bg-gray-800 border border-gray-700 p-2 rounded text-sm"><option value="Critical">Critical</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option><option value="Informational">Informational</option></select>
+                                <input type="number" id="bounty" placeholder="₹ Amount" class="bg-gray-800 border border-gray-700 p-2 rounded text-sm">
                             </div>
-                            <textarea id="impact" placeholder="Impact Log" rows="2" class="w-full bg-black/40 border border-gray-700 p-2 rounded text-xs outline-none"></textarea>
-                            <input type="url" id="poc" placeholder="POC Link" class="w-full bg-black/40 border border-gray-700 p-2 rounded text-xs outline-none">
+                            <input type="text" id="type" placeholder="Vuln Type" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm">
+                            <textarea id="impact" placeholder="Impact Description" rows="2" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm"></textarea>
+                            <input type="url" id="poc" placeholder="POC Link" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm">
+                            <input type="url" id="hof-ss" placeholder="HOF SS Link" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm">
+                            <input type="url" id="cert-link" placeholder="Cert Link" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm">
                             
-                            <div class="flex items-center justify-between p-2 bg-white/5 rounded">
-                                <span class="text-[10px] text-gray-400 uppercase">Not Reported?</span>
+                            <div class="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg">
+                                <span class="text-xs text-gray-400">Not Reported?</span>
                                 <label class="switch"><input type="checkbox" id="not-reported-toggle"><span class="slider"></span></label>
                             </div>
-                            
-                            <button type="submit" id="btn-submit" class="w-full bg-red-700 py-3 rounded text-[10px] font-black uppercase tracking-widest">Upload Findings</button>
+                            <div class="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg">
+                                <span class="text-xs text-gray-400">HOF?</span>
+                                <input type="checkbox" id="hof" class="accent-red-500">
+                            </div>
+                            <button type="submit" id="btn-submit" class="w-full bg-red-600 py-3 rounded-lg font-bold uppercase text-xs">Sync Finding</button>
                         </form>
                     </section>
                 </aside>
 
                 <div class="lg:col-span-9">
-                    <div class="hacker-panel rounded-xl overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[600px]">
-                            <thead class="bg-white/5 text-gray-500 uppercase text-[9px] font-bold">
-                                <tr><th class="p-4">Log_ID</th><th class="p-4">Evidence</th><th class="p-4">Status</th><th class="p-4 text-right">Actions</th></tr>
+                    <div class="glass-panel rounded-2xl overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[800px]">
+                            <thead class="bg-gray-800/50 text-gray-500 uppercase text-[10px] font-bold tracking-widest">
+                                <tr><th class="p-4">Details</th><th class="p-4">Evidence</th><th class="p-4">Status</th><th class="p-4 text-right">Actions</th></tr>
                             </thead>
-                            <tbody id="vuln-table-body" class="divide-y divide-white/5"></tbody>
+                            <tbody id="vuln-table-body" class="divide-y divide-gray-800"></tbody>
                         </table>
                     </div>
                 </div>
@@ -175,34 +174,21 @@
 
         document.getElementById('btn-login').addEventListener('click', async () => {
             const email = document.getElementById('login-email').value, pass = document.getElementById('login-pass').value;
-            try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { alert("ERROR: ACCESS_DENIED"); }
+            try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { alert("ACCESS DENIED"); }
         });
-
         window.signOutBtn = () => signOut(auth);
         document.getElementById('btn-logout').addEventListener('click', signOutBtn);
-
         onAuthStateChanged(auth, (user) => {
-            if (user) { 
-                document.getElementById('auth-screen').classList.add('hidden'); 
-                if (!currentScope) document.getElementById('choice-screen').classList.remove('hidden'); 
-            } else { 
-                document.getElementById('auth-screen').classList.remove('hidden'); 
-                document.getElementById('choice-screen').classList.add('hidden'); 
-                document.getElementById('main-app').classList.add('hidden'); 
-            }
+            if (user) { document.getElementById('auth-screen').classList.add('hidden'); if (!currentScope) document.getElementById('choice-screen').classList.remove('hidden'); }
+            else { document.getElementById('auth-screen').classList.remove('hidden'); document.getElementById('choice-screen').classList.add('hidden'); document.getElementById('main-app').classList.add('hidden'); }
         });
-
         window.setScope = (scope) => {
-            currentScope = scope; 
-            document.getElementById('choice-screen').classList.add('hidden'); 
-            document.getElementById('main-app').classList.remove('hidden');
+            currentScope = scope; document.getElementById('choice-screen').classList.add('hidden'); document.getElementById('main-app').classList.remove('hidden');
             document.getElementById('scope-icon').innerHTML = scope === 'web_findings' ? '<i class="fas fa-globe"></i>' : '<i class="fab fa-android"></i>';
             document.getElementById('scope-label').innerText = scope.toUpperCase();
             initRealtimeUpdates();
         };
-
         window.switchScope = () => { if (unsubscribe) unsubscribe(); currentScope = ""; document.getElementById('main-app').classList.add('hidden'); document.getElementById('choice-screen').classList.remove('hidden'); };
-
         function initRealtimeUpdates() {
             if (unsubscribe) unsubscribe();
             const q = query(collection(db, currentScope), orderBy("createdAt", "desc"));
@@ -216,63 +202,77 @@
                 reportDate: document.getElementById('reportDateInput').value, 
                 program: document.getElementById('program').value, 
                 domain: document.getElementById('domain').value.toLowerCase(), 
+                endpoint: document.getElementById('endpoint').value,
                 severity: document.getElementById('severity').value, 
                 type: document.getElementById('type').value, 
                 impact: document.getElementById('impact').value, 
                 poc: document.getElementById('poc').value || "", 
+                hofSS: document.getElementById('hof-ss').value || "", 
+                certLink: document.getElementById('cert-link').value || "", 
                 bounty: Number(document.getElementById('bounty').value) || 0, 
-                status: isNotReported ? "Not Reported" : "New",
+                hallOfFame: document.getElementById('hof').checked,
                 lastUpdated: serverTimestamp() 
             };
             if (editId) { await updateDoc(doc(db, currentScope, editId), data); document.getElementById('edit-id').value = ""; }
-            else { data.createdAt = serverTimestamp(); await addDoc(collection(db, currentScope), data); }
+            else { data.status = isNotReported ? "Not Reported" : "New"; data.createdAt = serverTimestamp(); await addDoc(collection(db, currentScope), data); }
             document.getElementById('finding-form').reset();
         });
 
         function renderTable() {
             const period = document.getElementById('earnings-period').value;
             const now = new Date();
-            let totalBounty = 0;
+            let totalBounty = 0, stats = { total: currentBugs.length, reported: 0, critical: 0, high: 0, medium: 0, low: 0, hof: 0, certs: 0 };
             
-            // Calculate Stats & Filter for Period
-            const stats = { total: currentBugs.length, reported: 0, critical: 0, high: 0, medium: 0, low: 0 };
             currentBugs.forEach(b => {
-                if(b.status !== 'Not Reported') stats.reported++;
-                if(b.status === 'Accepted') {
-                    if(b.severity === 'Critical') stats.critical++;
-                    if(b.severity === 'High') stats.high++;
-                    const bDate = new Date(b.reportDate);
-                    const diff = (now - bDate) / (1000 * 60 * 60 * 24);
-                    if(period === 'all' || diff <= Number(period)) totalBounty += (b.bounty || 0);
+                if (b.status !== 'Not Reported') stats.reported++;
+                if (b.status === 'Accepted') {
+                    if (b.severity === 'Critical') stats.critical++;
+                    else if (b.severity === 'High') stats.high++;
+                    else if (b.severity === 'Medium') stats.medium++;
+                    else stats.low++;
+                    if (b.hallOfFame) stats.hof++;
+                    if (b.certLink) stats.certs++;
+                    if (period === 'all' || (Math.abs(now - new Date(b.reportDate)) / 8.64e7) <= Number(period)) totalBounty += b.bounty;
                 }
             });
-            
+
             document.getElementById('stat-total').innerText = stats.total;
+            document.getElementById('stat-reported').innerText = stats.reported;
+            document.getElementById('stat-critical').innerText = stats.critical;
+            document.getElementById('stat-high').innerText = stats.high;
+            document.getElementById('stat-medium').innerText = stats.medium;
+            document.getElementById('stat-low-info').innerText = stats.low;
+            document.getElementById('stat-hof').innerText = stats.hof;
+            document.getElementById('stat-certs').innerText = stats.certs;
             document.getElementById('stat-bounty').innerText = "₹" + totalBounty.toLocaleString('en-IN');
 
             document.getElementById('vuln-table-body').innerHTML = currentBugs.map(b => `
-                <tr class="severity-${b.severity} hover:bg-white/5 transition-all">
+                <tr class="severity-${b.severity} hover:bg-white/5">
                     <td class="p-4">
-                        <div class="text-[8px] text-red-500 font-mono mb-1">${b.reportDate}</div>
-                        <div class="text-sm font-black text-white lowercase">${b.domain}</div>
-                        <div class="text-[10px] text-gray-500 uppercase">${b.program}</div>
+                        <div class="text-[9px] text-red-500 font-mono font-bold mb-1">${b.reportDate}</div>
+                        <div class="text-lg font-black text-white leading-tight lowercase">${b.domain}</div>
+                        <div class="text-[11px] text-gray-500 font-medium">${b.program}</div>
                     </td>
                     <td class="p-4">
-                        <div class="text-gray-300 text-xs font-bold">${b.type}</div>
-                        <div class="flex gap-2 mt-1">
-                            <span class="text-[8px] font-bold px-1 rounded bg-red-900/20 border border-red-500/30 text-red-400">${b.severity}</span>
-                            ${b.poc ? `<a href="${b.poc}" target="_blank" class="text-[8px] text-blue-400 hover:underline">VIEW_POC</a>` : ''}
+                        <div class="text-gray-200 text-sm font-semibold mb-1">${b.type}</div>
+                        <div class="flex flex-wrap gap-2 mb-1">
+                            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-800 border border-gray-700 uppercase">${b.severity}</span>
+                            ${b.poc ? `<a href="${b.poc}" target="_blank" class="text-[9px] text-red-400">POC</a>` : ''}
+                            ${b.hofSS ? `<a href="${b.hofSS}" target="_blank" class="text-[9px] text-yellow-400">HOF_SS</a>` : ''}
+                            ${b.certLink ? `<a href="${b.certLink}" target="_blank" class="text-[9px] text-blue-400">CERT</a>` : ''}
                         </div>
                     </td>
                     <td class="p-4">
-                        <span class="text-[9px] px-2 py-0.5 rounded bg-black/50 border border-gray-700">${b.status}</span>
-                        <div class="text-green-500 font-mono font-bold mt-1 text-xs">₹${(b.bounty || 0).toLocaleString()}</div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-black/50 border border-gray-700 uppercase">${b.status}</span>
+                            ${b.hallOfFame ? '⭐' : ''}
+                        </div>
+                        <div class="text-md font-bold text-green-500 font-mono">₹${(b.bounty || 0).toLocaleString()}</div>
                     </td>
                     <td class="p-4 text-right">
-                        <button onclick="editBug('${b.id}')" class="text-gray-500 hover:text-white mr-2"><i class="fas fa-edit"></i></button>
-                        <select onchange="updateStatus('${b.id}', this.value)" class="bg-black text-[8px] border border-gray-700 rounded p-1">
-                            <option value="" disabled selected>SET</option>
-                            <option value="Accepted">Accepted</option><option value="Duplicate">Duplicate</option><option value="Rejected">Rejected</option>
+                        <div class="flex justify-end gap-2 mb-2"><button onclick="editBug('${b.id}')" class="text-gray-500 hover:text-white"><i class="fas fa-edit"></i></button><button onclick="deleteBug('${b.id}')" class="text-gray-500 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div>
+                        <select onchange="updateStatus('${b.id}', this.value)" class="bg-black border border-gray-700 rounded text-[9px] p-1">
+                            <option value="" disabled selected>STATUS</option><option value="Accepted">Accepted</option><option value="Triaged">Triaged</option><option value="Duplicate">Duplicate</option><option value="Rejected">Rejected</option><option value="No Response">No Response</option><option value="Resolved">Resolved</option>
                         </select>
                     </td>
                 </tr>
@@ -288,8 +288,15 @@
             document.getElementById('reportDateInput').value = bug.reportDate;
             document.getElementById('severity').value = bug.severity;
             document.getElementById('bounty').value = bug.bounty;
+            document.getElementById('impact').value = bug.impact || "";
+            document.getElementById('poc').value = bug.poc || "";
+            document.getElementById('hof-ss').value = bug.hofSS || "";
+            document.getElementById('cert-link').value = bug.certLink || "";
+            document.getElementById('hof').checked = bug.hallOfFame;
+            document.getElementById('endpoint').value = bug.endpoint || "";
         };
 
+        window.deleteBug = async (id) => { if (confirm("Delete permanently?")) await deleteDoc(doc(db, currentScope, id)); };
         window.updateStatus = async (id, s) => { await updateDoc(doc(db, currentScope, id), { status: s }); };
     </script>
 </body>
