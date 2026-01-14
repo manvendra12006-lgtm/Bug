@@ -107,8 +107,8 @@
                         <form id="finding-form" class="space-y-3">
                             <input type="hidden" id="edit-id">
                             <div><label class="text-[10px] uppercase text-gray-500 ml-1">Report Date</label><input type="date" id="reportDateInput" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm focus:border-red-500 outline-none"></div>
-                            <input type="text" id="domain" placeholder="Platform Name" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
-                            <input type="text" id="program" placeholder="Domain Name" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
+                            <input type="text" id="domain" placeholder="Domain Name" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
+                            <input type="text" id="program" placeholder="Platform Name" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
                             <input type="text" id="endpoint" placeholder="Vuln URL / Endpoint" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
                             <div class="grid grid-cols-2 gap-2">
                                 <select id="severity" class="bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none">
@@ -143,7 +143,7 @@
                             <select id="filter-status" class="bg-gray-800 border border-gray-700 p-2 rounded-xl text-xs outline-none"><option value="Reported">Reported Only</option><option value="All">All Statuses</option><option value="No Response">No Response Only</option><option value="New">New</option><option value="Accepted">Accepted</option><option value="Triaged">Triaged</option><option value="Duplicate">Duplicate</option><option value="Informative">Informative</option><option value="Rejected">Rejected</option><option value="Not Reported">Not Reported Only</option></select>
                         </div>
                     </div>
-                    <div id="pdf-content" class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
                         <table class="w-full text-left border-collapse">
                             <thead class="bg-gray-800/50 text-gray-500 uppercase text-[10px] font-bold tracking-widest">
                                 <tr><th class="p-4">Details</th><th class="p-4">Vuln & Evidence</th><th class="p-4">Status & Reward</th><th class="p-4 text-right px-6">Actions</th></tr>
@@ -213,12 +213,10 @@
         window.deleteBug = async (id) => { if (confirm("Delete permanently?")) await deleteDoc(doc(db, currentScope, id)); };
         window.updateStatus = async (id, s) => { await updateDoc(doc(db, currentScope, id), { status: s }); };
 
-        // STATS LOGIC WITH TIME FILTER
         function updateStats() {
             const period = document.getElementById('earnings-period').value;
             const now = new Date();
             const stats = { total: currentBugs.length, reported: 0, critical: 0, high: 0, medium: 0, lowInfo: 0, hof: 0, certs: 0, bounty: 0 };
-            
             currentBugs.forEach(b => {
                 if (b.status !== 'Not Reported') stats.reported++;
                 if (b.status === 'Accepted') {
@@ -228,17 +226,11 @@
                     else stats.lowInfo++;
                     if (b.hallOfFame) stats.hof++;
                     if (b.certLink && b.certLink !== "") stats.certs++;
-                    
-                    // Bounty Time Calculation
-                    if (period === 'all') {
-                        stats.bounty += (Number(b.bounty) || 0);
-                    } else {
+                    if (period === 'all') { stats.bounty += (Number(b.bounty) || 0); }
+                    else {
                         const reportDate = new Date(b.reportDate);
-                        const diffTime = Math.abs(now - reportDate);
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                        if (diffDays <= Number(period)) {
-                            stats.bounty += (Number(b.bounty) || 0);
-                        }
+                        const diffDays = Math.ceil(Math.abs(now - reportDate) / (1000 * 60 * 60 * 24));
+                        if (diffDays <= Number(period)) { stats.bounty += (Number(b.bounty) || 0); }
                     }
                 }
             });
@@ -251,7 +243,6 @@
             document.getElementById('stat-hof').innerText = stats.hof;
             document.getElementById('stat-certs').innerText = stats.certs;
             document.getElementById('stat-bounty').innerText = "₹" + stats.bounty.toLocaleString('en-IN');
-            
             const label = document.getElementById('earnings-period').options[document.getElementById('earnings-period').selectedIndex].text;
             document.getElementById('bounty-label').innerText = label + " Earnings";
         }
@@ -267,7 +258,11 @@
                 })
                 .map(b => `
                     <tr class="severity-${b.severity} hover:bg-gray-800/40">
-                        <td class="p-4"><div class="text-[9px] text-red-500 font-mono">${b.reportDate}</div><div class="font-bold text-gray-100">${b.program}</div><div class="text-[10px] text-gray-500">${b.domain}</div></td>
+                        <td class="p-4">
+                            <div class="text-[9px] text-red-500 font-mono font-bold mb-1">${b.reportDate}</div>
+                            <div class="text-lg font-black text-white leading-tight uppercase tracking-tight">${b.domain}</div>
+                            <div class="text-[11px] text-gray-500 font-medium">${b.program}</div>
+                        </td>
                         <td class="p-4">
                             <div class="text-gray-200 text-sm font-semibold mb-1">${b.type}</div>
                             <div class="flex flex-wrap gap-2 mb-1">
