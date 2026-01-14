@@ -29,9 +29,7 @@
 
     <div id="auth-screen" class="fixed inset-0 bg-gray-950 z-50 flex items-center justify-center p-4">
         <div class="bg-gray-900 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-800">
-            <h1 class="text-3xl font-bold text-red-500 mb-2 flex items-center gap-2">
-                <i class="fas fa-user-secret"></i> TERMINAL
-            </h1>
+            <h1 class="text-3xl font-bold text-red-500 mb-2 flex items-center gap-2"><i class="fas fa-user-secret"></i> TERMINAL</h1>
             <p class="text-gray-400 mb-6 font-mono text-sm tracking-tighter">MSCMKN_SECURE_LOGIN</p>
             <input type="email" id="login-email" placeholder="Operator Email" class="w-full bg-gray-800 border border-gray-700 p-3 rounded mb-4 focus:outline-none focus:border-red-500 transition-all">
             <input type="password" id="login-pass" placeholder="Access Key" class="w-full bg-gray-800 border border-gray-700 p-3 rounded mb-6 focus:outline-none focus:border-red-500 transition-all">
@@ -70,9 +68,6 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <button onclick="switchScope()" class="text-[10px] text-gray-400 hover:text-white border border-gray-700 px-3 py-1.5 rounded-lg uppercase tracking-widest">Switch Scope</button>
-                    <button onclick="downloadPDF()" class="bg-gray-800 hover:bg-gray-700 text-xs px-4 py-2 rounded-lg border border-gray-700 flex items-center gap-2">
-                        <i class="fas fa-file-pdf text-red-400"></i> EXPORT_PDF
-                    </button>
                     <button id="btn-logout" class="text-gray-500 hover:text-red-400 flex items-center gap-2 font-mono text-xs">LOGOUT <i class="fas fa-power-off"></i></button>
                 </div>
             </div>
@@ -81,7 +76,7 @@
         <section class="max-w-[1600px] mx-auto px-4 md:px-6 pt-6">
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
                 <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl">
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Total</p>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Total Findings</p>
                     <p id="stat-total" class="text-xl font-black text-white">0</p>
                 </div>
                 <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-green-500">
@@ -124,10 +119,8 @@
                         </h3>
                         <form id="finding-form" class="space-y-3">
                             <input type="hidden" id="edit-id">
-                            <div>
-                                <label class="text-[10px] uppercase text-gray-500 ml-1">Report Date</label>
-                                <input type="date" id="reportDateInput" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm focus:border-red-500 outline-none">
-                            </div>
+                            <div><label class="text-[10px] uppercase text-gray-500 ml-1">Report Date</label>
+                            <input type="date" id="reportDateInput" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm focus:border-red-500 outline-none"></div>
                             <input type="text" id="program" placeholder="Platform / App Name" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
                             <input type="text" id="domain" placeholder="Domain / Package ID" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
                             <input type="text" id="endpoint" placeholder="Vuln URL / Endpoint" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
@@ -162,42 +155,17 @@
 
                 <div class="lg:col-span-9">
                     <div class="flex flex-col md:flex-row gap-4 mb-6 items-center justify-between bg-gray-900 p-4 rounded-2xl border border-gray-800">
-                        <div class="relative w-full md:w-64">
-                            <i class="fas fa-search absolute left-3 top-3 text-gray-500 text-xs"></i>
-                            <input type="text" id="search-bar" placeholder="Search..." class="w-full bg-gray-800 border border-gray-700 pl-10 pr-4 py-2 rounded-xl text-sm outline-none">
-                        </div>
+                        <div class="relative w-full md:w-64"><i class="fas fa-search absolute left-3 top-3 text-gray-500 text-xs"></i>
+                        <input type="text" id="search-bar" placeholder="Search..." class="w-full bg-gray-800 border border-gray-700 pl-10 pr-4 py-2 rounded-xl text-sm outline-none"></div>
                         <div class="flex flex-wrap gap-2">
-                            <select id="filter-severity" class="bg-gray-800 border border-gray-700 p-2 rounded-xl text-xs outline-none">
-                                <option value="All">All Severities</option>
-                                <option value="Critical">Critical</option>
-                                <option value="High">High</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Low">Low</option>
-                                <option value="Informational">Informational</option>
-                            </select>
-                            <select id="filter-status" class="bg-gray-800 border border-gray-700 p-2 rounded-xl text-xs outline-none">
-                                <option value="Reported">Reported Only</option>
-                                <option value="All">All Statuses</option>
-                                <option value="No Response">No Response Only</option>
-                                <option value="New">New</option>
-                                <option value="Accepted">Accepted</option>
-                                <option value="Triaged">Triaged</option>
-                                <option value="Duplicate">Duplicate</option>
-                                <option value="Informative">Informative</option>
-                                <option value="Rejected">Rejected</option>
-                                <option value="Not Reported">Not Reported Only</option>
-                            </select>
+                            <select id="filter-severity" class="bg-gray-800 border border-gray-700 p-2 rounded-xl text-xs outline-none"><option value="All">All Severities</option><option value="Critical">Critical</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option><option value="Informational">Informational</option></select>
+                            <select id="filter-status" class="bg-gray-800 border border-gray-700 p-2 rounded-xl text-xs outline-none"><option value="Reported">Reported Only</option><option value="All">All Statuses</option><option value="No Response">No Response Only</option><option value="New">New</option><option value="Accepted">Accepted</option><option value="Triaged">Triaged</option><option value="Duplicate">Duplicate</option><option value="Informative">Informative</option><option value="Rejected">Rejected</option><option value="Not Reported">Not Reported Only</option></select>
                         </div>
                     </div>
                     <div id="pdf-content" class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
                         <table class="w-full text-left border-collapse">
                             <thead class="bg-gray-800/50 text-gray-500 uppercase text-[10px] font-bold tracking-widest">
-                                <tr>
-                                    <th class="p-4">Details</th>
-                                    <th class="p-4">Vuln & Evidence</th>
-                                    <th class="p-4">Status & Reward</th>
-                                    <th class="p-4 text-right px-6">Actions</th>
-                                </tr>
+                                <tr><th class="p-4">Details</th><th class="p-4">Vuln & Evidence</th><th class="p-4">Status & Reward</th><th class="p-4 text-right px-6">Actions</th></tr>
                             </thead>
                             <tbody id="vuln-table-body" class="divide-y divide-gray-800"></tbody>
                         </table>
@@ -287,16 +255,19 @@
         window.deleteBug = async (id) => { if (confirm("Delete permanently?")) await deleteDoc(doc(db, currentScope, id)); };
         window.updateStatus = async (id, s) => { await updateDoc(doc(db, currentScope, id), { status: s }); };
 
+        // STATS LOGIC: ONLY COUNTS IF NOT 'NOT REPORTED'
         function updateStats() {
             const stats = { total: currentBugs.length, reported: 0, critical: 0, high: 0, medium: 0, lowInfo: 0, hof: 0, certs: 0 };
             currentBugs.forEach(b => {
-                if (b.status !== 'Not Reported' && b.status !== 'No Response') stats.reported++;
-                if (b.severity === 'Critical') stats.critical++;
-                else if (b.severity === 'High') stats.high++;
-                else if (b.severity === 'Medium') stats.medium++;
-                else stats.lowInfo++;
-                if (b.hallOfFame) stats.hof++;
-                if (b.certLink && b.certLink !== "") stats.certs++;
+                if (b.status !== 'Not Reported') {
+                    stats.reported++;
+                    if (b.severity === 'Critical') stats.critical++;
+                    else if (b.severity === 'High') stats.high++;
+                    else if (b.severity === 'Medium') stats.medium++;
+                    else stats.lowInfo++;
+                    if (b.hallOfFame) stats.hof++;
+                    if (b.certLink && b.certLink !== "") stats.certs++;
+                }
             });
             document.getElementById('stat-total').innerText = stats.total;
             document.getElementById('stat-reported').innerText = stats.reported;
@@ -365,7 +336,6 @@
                     </tr>
                 `).join('');
         }
-        window.downloadPDF = () => { const element = document.getElementById('pdf-content'); html2pdf().set({ margin: 0.5, filename: `MSCMKN_${currentScope}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { orientation: 'landscape' }}).from(element).save(); };
         document.getElementById('search-bar').addEventListener('input', renderTable);
         document.getElementById('filter-status').addEventListener('change', renderTable);
         document.getElementById('filter-severity').addEventListener('change', renderTable);
