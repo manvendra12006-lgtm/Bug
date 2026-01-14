@@ -8,14 +8,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Hacker Video Background */
+        #video-bg {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+            filter: brightness(0.2) contrast(1.2);
+            object-fit: cover;
+        }
+
         .severity-Critical { border-left: 4px solid #ef4444; background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%); }
         .severity-High { border-left: 4px solid #f97316; background: linear-gradient(90deg, rgba(249, 115, 22, 0.1) 0%, transparent 100%); }
         .severity-Medium { border-left: 4px solid #eab308; background: linear-gradient(90deg, rgba(234, 179, 8, 0.1) 0%, transparent 100%); }
         .severity-Low { border-left: 4px solid #3b82f6; background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%); }
         .severity-Informational { border-left: 4px solid #9ca3af; background: linear-gradient(90deg, rgba(156, 163, 175, 0.1) 0%, transparent 100%); }
+        
         .custom-scroll::-webkit-scrollbar { width: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: #111827; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
+        
+        /* Glassmorphism for containers to see video */
+        .glass-panel { background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        
         .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #374151; transition: .4s; border-radius: 20px; }
@@ -26,37 +43,41 @@
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen custom-scroll">
 
-    <div id="auth-screen" class="fixed inset-0 bg-gray-950 z-50 flex items-center justify-center p-4">
-        <div class="bg-gray-900 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-800">
+    <video autoplay muted loop id="video-bg">
+        <source src="https://raw.githubusercontent.com/manvendra12006-lgtm/Bug-Tracker/main/6994754-uhd_3840_2160_25fps.mp4" type="video/mp4">
+    </video>
+
+    <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="glass-panel p-8 rounded-2xl shadow-2xl w-full max-w-md">
             <h1 class="text-3xl font-bold text-red-500 mb-2 flex items-center gap-2"><i class="fas fa-user-secret"></i> TERMINAL</h1>
             <p class="text-gray-400 mb-6 font-mono text-sm tracking-tighter">MSCMKN_SECURE_LOGIN</p>
-            <input type="email" id="login-email" placeholder="Operator Email" class="w-full bg-gray-800 border border-gray-700 p-3 rounded mb-4 focus:outline-none focus:border-red-500 transition-all">
-            <input type="password" id="login-pass" placeholder="Access Key" class="w-full bg-gray-800 border border-gray-700 p-3 rounded mb-6 focus:outline-none focus:border-red-500 transition-all">
+            <input type="email" id="login-email" placeholder="Operator Email" class="w-full bg-gray-800/50 border border-gray-700 p-3 rounded mb-4 focus:outline-none focus:border-red-500 transition-all">
+            <input type="password" id="login-pass" placeholder="Access Key" class="w-full bg-gray-800/50 border border-gray-700 p-3 rounded mb-6 focus:outline-none focus:border-red-500 transition-all">
             <button id="btn-login" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded transition-all tracking-widest uppercase">Start Session</button>
         </div>
     </div>
 
-    <div id="choice-screen" class="hidden fixed inset-0 bg-gray-950 z-40 flex items-center justify-center p-4">
+    <div id="choice-screen" class="hidden fixed inset-0 z-40 flex items-center justify-center p-4">
         <div class="text-center max-w-2xl w-full">
             <h2 class="text-2xl font-black mb-8 tracking-widest uppercase">Select <span class="text-red-500">Operation Scope</span></h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <button onclick="setScope('web_findings')" class="group p-8 bg-gray-900 border border-gray-800 rounded-3xl hover:border-red-500 transition-all text-left">
+                <button onclick="setScope('web_findings')" class="group p-8 glass-panel rounded-3xl hover:border-red-500 transition-all text-left">
                     <i class="fas fa-globe text-4xl text-red-500 mb-4 group-hover:scale-110 transition-transform"></i>
                     <h3 class="text-xl font-bold mb-2 uppercase">Web Tracker</h3>
-                    <p class="text-xs text-gray-500">Web Vulnerability Database</p>
+                    <p class="text-xs text-gray-400">Web Vulnerability Database</p>
                 </button>
-                <button onclick="setScope('android_findings')" class="group p-8 bg-gray-900 border border-gray-800 rounded-3xl hover:border-red-500 transition-all text-left">
+                <button onclick="setScope('android_findings')" class="group p-8 glass-panel rounded-3xl hover:border-red-500 transition-all text-left">
                     <i class="fab fa-android text-4xl text-red-500 mb-4 group-hover:scale-110 transition-transform"></i>
                     <h3 class="text-xl font-bold mb-2 uppercase">Android Tracker</h3>
-                    <p class="text-xs text-gray-500">Mobile Vulnerability Database</p>
+                    <p class="text-xs text-gray-400">Mobile Vulnerability Database</p>
                 </button>
             </div>
-            <button onclick="signOutBtn()" class="mt-8 text-gray-600 hover:text-red-500 text-xs uppercase tracking-widest">Abort Session</button>
+            <button onclick="signOutBtn()" class="mt-8 text-gray-500 hover:text-red-500 text-xs uppercase tracking-widest">Abort Session</button>
         </div>
     </div>
 
-    <div id="main-app" class="hidden">
-        <header class="border-b border-gray-800 p-4 bg-gray-950/80 backdrop-blur-md sticky top-0 z-30">
+    <div id="main-app" class="hidden relative z-10">
+        <header class="border-b border-gray-800 p-4 bg-gray-950/60 backdrop-blur-md sticky top-0 z-30">
             <div class="max-w-[1600px] mx-auto flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div id="scope-icon" class="bg-red-600 p-2 rounded-lg text-white"></div>
@@ -84,15 +105,15 @@
 
         <section class="max-w-[1600px] mx-auto px-4 md:px-6 pt-6">
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-3">
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Total Findings</p><p id="stat-total" class="text-xl font-black text-white">0</p></div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-green-500"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reported</p><p id="stat-reported" class="text-xl font-black text-green-500">0</p></div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-red-600"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Critical</p><p id="stat-critical" class="text-xl font-black text-red-600">0</p></div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-orange-500"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">High</p><p id="stat-high" class="text-xl font-black text-orange-500">0</p></div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-yellow-500"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Medium</p><p id="stat-medium" class="text-xl font-black text-yellow-500">0</p></div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-blue-500"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Low/Info</p><p id="stat-low-info" class="text-xl font-black text-blue-500">0</p></div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">HOF ⭐</p><p id="stat-hof" class="text-xl font-black text-yellow-400">0</p></div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Certs 📜</p><p id="stat-certs" class="text-xl font-black text-blue-400">0</p></div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl bg-gradient-to-br from-green-900/20 to-transparent border-l-4 border-l-green-400">
+                <div class="glass-panel p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Total Findings</p><p id="stat-total" class="text-xl font-black text-white">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-green-500"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reported</p><p id="stat-reported" class="text-xl font-black text-green-500">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-red-600"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Critical</p><p id="stat-critical" class="text-xl font-black text-red-600">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-orange-500"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">High</p><p id="stat-high" class="text-xl font-black text-orange-500">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-yellow-500"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Medium</p><p id="stat-medium" class="text-xl font-black text-yellow-500">0</p></div>
+                <div class="glass-panel p-3 rounded-xl border-l-4 border-l-blue-500"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Low/Info</p><p id="stat-low-info" class="text-xl font-black text-blue-500">0</p></div>
+                <div class="glass-panel p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">HOF ⭐</p><p id="stat-hof" class="text-xl font-black text-yellow-400">0</p></div>
+                <div class="glass-panel p-3 rounded-xl"><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Certs 📜</p><p id="stat-certs" class="text-xl font-black text-blue-400">0</p></div>
+                <div class="glass-panel p-3 rounded-xl bg-gradient-to-br from-green-900/20 to-transparent border-l-4 border-l-green-400">
                     <p id="bounty-label" class="text-[10px] text-green-500 uppercase font-bold tracking-widest">Total Bounty</p>
                     <p id="stat-bounty" class="text-xl font-black text-green-400">₹0</p>
                 </div>
@@ -102,7 +123,7 @@
         <main class="max-w-[1600px] mx-auto p-4 md:p-6">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <aside class="lg:col-span-3">
-                    <section class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sticky top-24">
+                    <section class="glass-panel p-6 sticky top-24 rounded-2xl">
                         <h3 id="form-title" class="text-sm font-bold mb-6 text-gray-400 uppercase tracking-widest flex items-center gap-2"><i class="fas fa-plus-circle text-red-500"></i> New Finding</h3>
                         <form id="finding-form" class="space-y-3">
                             <input type="hidden" id="edit-id">
@@ -136,14 +157,14 @@
                 </aside>
 
                 <div class="lg:col-span-9">
-                    <div class="flex flex-col md:flex-row gap-4 mb-6 items-center justify-between bg-gray-900 p-4 rounded-2xl border border-gray-800">
-                        <div class="relative w-full md:w-64"><i class="fas fa-search absolute left-3 top-3 text-gray-500 text-xs"></i><input type="text" id="search-bar" placeholder="Search..." class="w-full bg-gray-800 border border-gray-700 pl-10 pr-4 py-2 rounded-xl text-sm outline-none"></div>
+                    <div class="flex flex-col md:flex-row gap-4 mb-6 items-center justify-between glass-panel p-4 rounded-2xl">
+                        <div class="relative w-full md:w-64"><i class="fas fa-search absolute left-3 top-3 text-gray-500 text-xs"></i><input type="text" id="search-bar" placeholder="Search..." class="w-full bg-gray-800/50 border border-gray-700 pl-10 pr-4 py-2 rounded-xl text-sm outline-none"></div>
                         <div class="flex flex-wrap gap-2">
-                            <select id="filter-severity" class="bg-gray-800 border border-gray-700 p-2 rounded-xl text-xs outline-none"><option value="All">All Severities</option><option value="Critical">Critical</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option><option value="Informational">Informational</option></select>
-                            <select id="filter-status" class="bg-gray-800 border border-gray-700 p-2 rounded-xl text-xs outline-none"><option value="Reported">Reported Only</option><option value="All">All Statuses</option><option value="No Response">No Response Only</option><option value="New">New</option><option value="Accepted">Accepted</option><option value="Triaged">Triaged</option><option value="Duplicate">Duplicate</option><option value="Informative">Informative</option><option value="Rejected">Rejected</option><option value="Not Reported">Not Reported Only</option></select>
+                            <select id="filter-severity" class="bg-gray-800/50 border border-gray-700 p-2 rounded-xl text-xs outline-none"><option value="All">All Severities</option><option value="Critical">Critical</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option><option value="Informational">Informational</option></select>
+                            <select id="filter-status" class="bg-gray-800/50 border border-gray-700 p-2 rounded-xl text-xs outline-none"><option value="Reported">Reported Only</option><option value="All">All Statuses</option><option value="No Response">No Response Only</option><option value="New">New</option><option value="Accepted">Accepted</option><option value="Triaged">Triaged</option><option value="Duplicate">Duplicate</option><option value="Informative">Informative</option><option value="Rejected">Rejected</option><option value="Not Reported">Not Reported Only</option></select>
                         </div>
                     </div>
-                    <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
                         <table class="w-full text-left border-collapse">
                             <thead class="bg-gray-800/50 text-gray-500 uppercase text-[10px] font-bold tracking-widest">
                                 <tr><th class="p-4">Details</th><th class="p-4">Vuln & Evidence</th><th class="p-4">Status & Reward</th><th class="p-4 text-right px-6">Actions</th></tr>
@@ -252,16 +273,16 @@
             const search = document.getElementById('search-bar').value.toLowerCase(), statusFilt = document.getElementById('filter-status').value, severityFilt = document.getElementById('filter-severity').value;
             document.getElementById('vuln-table-body').innerHTML = currentBugs
                 .filter(b => {
-                    const matchesSearch = b.program.toLowerCase().includes(search) || b.domain.toLowerCase().includes(search), matchesSeverity = severityFilt === 'All' || b.severity === severityFilt;
+                    const matchesSearch = (b.program || "").toLowerCase().includes(search) || (b.domain || "").toLowerCase().includes(search), matchesSeverity = severityFilt === 'All' || b.severity === severityFilt;
                     let matchesStatus = (statusFilt === 'Reported') ? (b.status !== 'Not Reported') : (statusFilt === 'No Response' ? (b.status === 'No Response') : (statusFilt === 'All' || b.status === statusFilt));
                     return matchesSearch && matchesSeverity && matchesStatus;
                 })
                 .map(b => `
-                    <tr class="severity-${b.severity} hover:bg-gray-800/40">
+                    <tr class="severity-${b.severity} hover:bg-white/5 transition-colors">
                         <td class="p-4">
                             <div class="text-[9px] text-red-500 font-mono font-bold mb-1">${b.reportDate}</div>
-                            <div class="text-lg font-black text-white leading-tight uppercase tracking-tight">${b.domain}</div>
-                            <div class="text-[11px] text-gray-500 font-medium">${b.program}</div>
+                            <div class="text-lg font-black text-white leading-tight lowercase tracking-tight">${b.domain}</div>
+                            <div class="text-[11px] text-gray-400 font-medium">${b.program}</div>
                         </td>
                         <td class="p-4">
                             <div class="text-gray-200 text-sm font-semibold mb-1">${b.type}</div>
@@ -275,7 +296,7 @@
                         </td>
                         <td class="p-4">
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${b.status === 'No Response' ? 'bg-gray-700 text-gray-400 border-gray-600' : 'bg-gray-900 border-gray-700'} uppercase">${b.status}</span>
+                                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${b.status === 'No Response' ? 'bg-gray-700 text-gray-400 border-gray-600' : 'bg-gray-900/50 border-gray-700'} uppercase">${b.status}</span>
                                 ${b.hallOfFame ? '⭐' : ''}
                             </div>
                             <div class="text-md font-bold text-green-500 font-mono">₹${(Number(b.bounty) || 0).toLocaleString('en-IN')}</div>
