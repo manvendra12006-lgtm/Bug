@@ -105,7 +105,7 @@
                         <form id="finding-form" class="space-y-3">
                             <input type="hidden" id="edit-id">
                             <input type="date" id="reportDateInput" required class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-xs text-white">
-                            <input type="text" id="domain" placeholder="domain.com (lowercase)" required class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-xs text-white">
+                            <input type="text" id="domain" placeholder="domain.com" required class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-xs text-white">
                             <input type="text" id="program" placeholder="Platform" required class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-xs text-white">
                             <input type="text" id="endpoint" placeholder="Endpoint" class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-xs text-white">
                             
@@ -128,11 +128,11 @@
                             <input type="url" id="cert-link" placeholder="Certificate Link" class="w-full bg-gray-800/50 border border-gray-700 p-2 rounded text-xs text-white">
                             
                             <div class="flex items-center justify-between p-2 bg-gray-800/30 rounded">
-                                <span class="text-[10px] text-gray-400">NOT REPORTED?</span>
+                                <span class="text-[10px] text-gray-400 uppercase">Not Reported?</span>
                                 <label class="switch"><input type="checkbox" id="not-reported-toggle"><span class="slider"></span></label>
                             </div>
                             <div class="flex items-center justify-between p-2 bg-gray-800/30 rounded">
-                                <span class="text-[10px] text-gray-400">HALL OF FAME?</span>
+                                <span class="text-[10px] text-gray-400 uppercase">HOF?</span>
                                 <input type="checkbox" id="hof" class="accent-red-500">
                             </div>
                             <button type="submit" id="btn-submit" class="w-full bg-red-600 py-3 rounded text-[10px] font-bold uppercase tracking-widest">Sync Finding</button>
@@ -146,13 +146,13 @@
                         <div class="relative w-full md:w-64"><i class="fas fa-search absolute left-3 top-3 text-gray-500 text-xs"></i><input type="text" id="search-bar" placeholder="Search Logs..." class="w-full bg-gray-800/50 border border-gray-700 pl-10 pr-4 py-2 rounded-xl text-xs outline-none text-white"></div>
                         <div class="flex flex-wrap gap-2">
                             <select id="filter-severity" onchange="renderTable()" class="bg-gray-800/50 border border-gray-700 p-2 rounded-xl text-[10px] outline-none text-white"><option value="All">All Severity</option><option value="Critical">Critical</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
-                            <select id="filter-status" onchange="renderTable()" class="bg-gray-800/50 border border-gray-700 p-2 rounded-xl text-[10px] outline-none text-white"><option value="All">All Status</option><option value="Reported">Reported</option><option value="Accepted">Accepted</option><option value="Duplicate">Duplicate</option><option value="No Response">No Response</option><option value="Not Reported Only">Not Reported</option></select>
+                            <select id="filter-status" onchange="renderTable()" class="bg-gray-800/50 border border-gray-700 p-2 rounded-xl text-[10px] outline-none text-white"><option value="All">All Status</option><option value="Reported">Reported</option><option value="Accepted">Accepted</option><option value="Duplicate">Duplicate</option><option value="Rejected">Rejected</option><option value="Not Reported Only">Not Reported</option></select>
                         </div>
                     </div>
                     <div class="glass-panel rounded-2xl overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[800px]">
                             <thead class="bg-gray-800/50 text-gray-500 uppercase text-[9px] font-bold tracking-widest">
-                                <tr><th class="p-4">Log Detail</th><th class="p-4">Evidence & Vuln</th><th class="p-4">Status & Bounty</th><th class="p-4 text-right">Terminal</th></tr>
+                                <tr><th class="p-4">Details</th><th class="p-4">Evidence</th><th class="p-4">Status</th><th class="p-4 text-right">Actions</th></tr>
                             </thead>
                             <tbody id="vuln-table-body" class="divide-y divide-gray-800/50"></tbody>
                         </table>
@@ -175,7 +175,7 @@
 
         document.getElementById('btn-login').addEventListener('click', async () => {
             const email = document.getElementById('login-email').value, pass = document.getElementById('login-pass').value;
-            try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { alert("TERMINAL_ERROR: ACCESS_DENIED"); }
+            try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { alert("ACCESS_DENIED"); }
         });
         window.signOutBtn = () => signOut(auth);
         document.getElementById('btn-logout').addEventListener('click', signOutBtn);
@@ -229,17 +229,27 @@
             const search = document.getElementById('search-bar').value.toLowerCase();
             const statusFilt = document.getElementById('filter-status').value;
             const severityFilt = document.getElementById('filter-severity').value;
+            const period = document.getElementById('earnings-period').value;
+            const now = new Date();
             
-            // Stats logic
             const stats = { total: currentBugs.length, reported: 0, crit: 0, high: 0, med: 0, low: 0, hof: 0, certs: 0, bounty: 0 };
+            
             currentBugs.forEach(b => {
                 if (b.status !== 'Not Reported') stats.reported++;
                 if (b.status === 'Accepted') {
                     if (b.severity === 'Critical') stats.crit++; else if (b.severity === 'High') stats.high++; else if (b.severity === 'Medium') stats.med++; else stats.low++;
                     if (b.hallOfFame) stats.hof++; if (b.certLink) stats.certs++;
-                    stats.bounty += (b.bounty || 0);
+                    
+                    // FIXED BOUNTY SUM CALCULATION
+                    if (period === 'all') {
+                        stats.bounty += (Number(b.bounty) || 0);
+                    } else {
+                        const diff = Math.ceil(Math.abs(now - new Date(b.reportDate)) / (1000 * 60 * 60 * 24));
+                        if (diff <= Number(period)) stats.bounty += (Number(b.bounty) || 0);
+                    }
                 }
             });
+
             document.getElementById('stat-total').innerText = stats.total;
             document.getElementById('stat-reported').innerText = stats.reported;
             document.getElementById('stat-critical').innerText = stats.crit;
@@ -266,12 +276,11 @@
                         </td>
                         <td class="p-4">
                             <div class="text-gray-200 text-xs font-bold mb-1">${b.type}</div>
-                            <div class="flex flex-wrap gap-2 mb-1">
+                            <div class="flex flex-wrap gap-2">
                                 <span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-gray-800 border border-gray-700 uppercase">${b.severity}</span>
                                 ${b.duplicateCount > 0 ? `<span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-red-950/40 border border-red-500 text-red-400">DUP: ${b.duplicateCount}</span>` : ''}
-                                ${b.poc ? `<a href="${b.poc}" target="_blank" class="text-[8px] text-red-400 border border-red-500/20 px-1 rounded hover:bg-red-500/10">POC</a>` : ''}
+                                ${b.poc ? `<a href="${b.poc}" target="_blank" class="text-[8px] text-red-400 border border-red-500/20 px-1 rounded">POC</a>` : ''}
                                 ${b.hofSS ? `<a href="${b.hofSS}" target="_blank" class="text-[8px] text-yellow-400 border border-yellow-500/20 px-1 rounded">HOF</a>` : ''}
-                                ${b.certLink ? `<a href="${b.certLink}" target="_blank" class="text-[8px] text-blue-400 border border-blue-500/20 px-1 rounded">CERT</a>` : ''}
                             </div>
                         </td>
                         <td class="p-4">
