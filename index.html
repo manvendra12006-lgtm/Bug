@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MSCMKN Tracker | Multi-Scope Database</title>
-    
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/manvendra12006-lgtm/Bug-Tracker/main/Gemini_Generated_Image_jrs0z8jrs0z8jrs0.png">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -16,11 +14,9 @@
         .severity-Medium { border-left: 4px solid #eab308; background: linear-gradient(90deg, rgba(234, 179, 8, 0.1) 0%, transparent 100%); }
         .severity-Low { border-left: 4px solid #3b82f6; background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%); }
         .severity-Informational { border-left: 4px solid #9ca3af; background: linear-gradient(90deg, rgba(156, 163, 175, 0.1) 0%, transparent 100%); }
-        
         .custom-scroll::-webkit-scrollbar { width: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: #111827; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
-
         .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #374151; transition: .4s; border-radius: 20px; }
@@ -82,9 +78,45 @@
             </div>
         </header>
 
+        <section class="max-w-[1600px] mx-auto px-4 md:px-6 pt-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Total</p>
+                    <p id="stat-total" class="text-xl font-black text-white">0</p>
+                </div>
+                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-green-500">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reported</p>
+                    <p id="stat-reported" class="text-xl font-black text-green-500">0</p>
+                </div>
+                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-red-600">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Critical</p>
+                    <p id="stat-critical" class="text-xl font-black text-red-600">0</p>
+                </div>
+                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-orange-500">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">High</p>
+                    <p id="stat-high" class="text-xl font-black text-orange-500">0</p>
+                </div>
+                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-yellow-500">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Medium</p>
+                    <p id="stat-medium" class="text-xl font-black text-yellow-500">0</p>
+                </div>
+                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl border-l-4 border-l-blue-500">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Low/Info</p>
+                    <p id="stat-low-info" class="text-xl font-black text-blue-500">0</p>
+                </div>
+                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">HOF ⭐</p>
+                    <p id="stat-hof" class="text-xl font-black text-yellow-400">0</p>
+                </div>
+                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Certs 📜</p>
+                    <p id="stat-certs" class="text-xl font-black text-blue-400">0</p>
+                </div>
+            </div>
+        </section>
+
         <main class="max-w-[1600px] mx-auto p-4 md:p-6">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
                 <aside class="lg:col-span-3">
                     <section class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sticky top-24">
                         <h3 id="form-title" class="text-sm font-bold mb-6 text-gray-400 uppercase tracking-widest flex items-center gap-2">
@@ -96,10 +128,9 @@
                                 <label class="text-[10px] uppercase text-gray-500 ml-1">Report Date</label>
                                 <input type="date" id="reportDateInput" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm focus:border-red-500 outline-none">
                             </div>
-                            <input type="text" id="program" placeholder="Domain Name" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
-                            <input type="text" id="domain" placeholder="Platform Name" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
+                            <input type="text" id="program" placeholder="Platform / App Name" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
+                            <input type="text" id="domain" placeholder="Domain / Package ID" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
                             <input type="text" id="endpoint" placeholder="Vuln URL / Endpoint" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500">
-                            
                             <div class="grid grid-cols-2 gap-2">
                                 <select id="severity" class="bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none">
                                     <option value="Informational">Informational</option>
@@ -110,27 +141,19 @@
                                 </select>
                                 <input type="number" id="bounty" placeholder="Bounty (₹)" class="bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none">
                             </div>
-
                             <input type="text" id="type" placeholder="Vulnerability Type" required class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none">
                             <textarea id="impact" placeholder="Impact Description" rows="2" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none focus:border-red-500"></textarea>
-                            
                             <input type="url" id="poc" placeholder="POC Link (URL)" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none">
                             <input type="url" id="hof-ss" placeholder="HoF Screenshot Link" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none">
                             <input type="url" id="cert-link" placeholder="Certificate Link" class="w-full bg-gray-800 border border-gray-700 p-2 rounded text-sm outline-none">
-
                             <div class="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg">
                                 <span class="text-xs text-gray-400 font-bold uppercase tracking-tighter">Not Reported?</span>
-                                <label class="switch">
-                                    <input type="checkbox" id="not-reported-toggle">
-                                    <span class="slider"></span>
-                                </label>
+                                <label class="switch"><input type="checkbox" id="not-reported-toggle"><span class="slider"></span></label>
                             </div>
-
                             <div class="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg">
                                 <label class="text-xs text-gray-400">Hall of Fame?</label>
                                 <input type="checkbox" id="hof" class="accent-red-500 h-4 w-4">
                             </div>
-
                             <button type="submit" id="btn-submit" class="w-full bg-red-600 hover:bg-red-500 py-3 rounded-lg font-bold mt-4 text-xs tracking-widest uppercase">Sync Finding</button>
                             <button type="button" id="btn-cancel-edit" class="hidden w-full bg-gray-700 py-2 rounded-lg font-bold mt-2 text-[10px] uppercase">Cancel Edit</button>
                         </form>
@@ -166,7 +189,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div id="pdf-content" class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
                         <table class="w-full text-left border-collapse">
                             <thead class="bg-gray-800/50 text-gray-500 uppercase text-[10px] font-bold tracking-widest">
@@ -190,15 +212,7 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = { 
-            apiKey: "AIzaSyDZAUqA4MVwNCEDA-QlacfMOOJJQUk_NVI",
-            authDomain: "mybugtracker-d7ceb.firebaseapp.com",
-            projectId: "mybugtracker-d7ceb",
-            storageBucket: "mybugtracker-d7ceb.firebasestorage.app",
-            messagingSenderId: "14365708367",
-            appId: "1:14365708367:web:d3f9b9c8b630cb3f845a3a"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyDZAUqA4MVwNCEDA-QlacfMOOJJQUk_NVI", authDomain: "mybugtracker-d7ceb.firebaseapp.com", projectId: "mybugtracker-d7ceb", storageBucket: "mybugtracker-d7ceb.firebasestorage.app", messagingSenderId: "14365708367", appId: "1:14365708367:web:d3f9b9c8b630cb3f845a3a" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -211,24 +225,12 @@
             const pass = document.getElementById('login-pass').value;
             try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { alert("ACCESS DENIED"); }
         });
-
         window.signOutBtn = () => signOut(auth);
         document.getElementById('btn-logout').addEventListener('click', signOutBtn);
-
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('auth-screen').classList.add('hidden');
-                if (!currentScope) {
-                    document.getElementById('choice-screen').classList.remove('hidden');
-                }
-            } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
-                document.getElementById('choice-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.add('hidden');
-                currentScope = "";
-            }
+            if (user) { document.getElementById('auth-screen').classList.add('hidden'); if (!currentScope) document.getElementById('choice-screen').classList.remove('hidden'); }
+            else { document.getElementById('auth-screen').classList.remove('hidden'); document.getElementById('choice-screen').classList.add('hidden'); document.getElementById('main-app').classList.add('hidden'); currentScope = ""; }
         });
-
         window.setScope = (scope) => {
             currentScope = scope;
             document.getElementById('choice-screen').classList.add('hidden');
@@ -238,52 +240,20 @@
             document.getElementById('scope-label').innerText = isWeb ? 'WEB_VULNERABILITY_SCOPE' : 'ANDROID_APP_SCOPE';
             initRealtimeUpdates();
         };
-
-        window.switchScope = () => {
-            if (unsubscribe) unsubscribe();
-            currentScope = "";
-            document.getElementById('main-app').classList.add('hidden');
-            document.getElementById('choice-screen').classList.remove('hidden');
-        };
-
+        window.switchScope = () => { if (unsubscribe) unsubscribe(); currentScope = ""; document.getElementById('main-app').classList.add('hidden'); document.getElementById('choice-screen').classList.remove('hidden'); };
         function initRealtimeUpdates() {
             if (unsubscribe) unsubscribe();
             const q = query(collection(db, currentScope), orderBy("createdAt", "desc"));
-            unsubscribe = onSnapshot(q, (snapshot) => {
-                currentBugs = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
-                renderTable();
-            });
+            unsubscribe = onSnapshot(q, (snapshot) => { currentBugs = snapshot.docs.map(d => ({id: d.id, ...d.data()})); renderTable(); });
         }
 
         document.getElementById('finding-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const editId = document.getElementById('edit-id').value;
             const isNotReported = document.getElementById('not-reported-toggle').checked;
-            const data = {
-                reportDate: document.getElementById('reportDateInput').value,
-                program: document.getElementById('program').value,
-                domain: document.getElementById('domain').value,
-                endpoint: document.getElementById('endpoint').value,
-                severity: document.getElementById('severity').value,
-                type: document.getElementById('type').value,
-                impact: document.getElementById('impact').value,
-                poc: document.getElementById('poc').value || "",
-                hofSS: document.getElementById('hof-ss').value || "",
-                certLink: document.getElementById('cert-link').value || "",
-                bounty: document.getElementById('bounty').value || 0,
-                hallOfFame: document.getElementById('hof').checked,
-                lastUpdated: serverTimestamp()
-            };
-
-            if (editId) {
-                if (isNotReported) data.status = "Not Reported";
-                await updateDoc(doc(db, currentScope, editId), data);
-                cancelEdit();
-            } else {
-                data.status = isNotReported ? "Not Reported" : "New";
-                data.createdAt = serverTimestamp();
-                await addDoc(collection(db, currentScope), data);
-            }
+            const data = { reportDate: document.getElementById('reportDateInput').value, program: document.getElementById('program').value, domain: document.getElementById('domain').value, endpoint: document.getElementById('endpoint').value, severity: document.getElementById('severity').value, type: document.getElementById('type').value, impact: document.getElementById('impact').value, poc: document.getElementById('poc').value || "", hofSS: document.getElementById('hof-ss').value || "", certLink: document.getElementById('cert-link').value || "", bounty: document.getElementById('bounty').value || 0, hallOfFame: document.getElementById('hof').checked, lastUpdated: serverTimestamp() };
+            if (editId) { if (isNotReported) data.status = "Not Reported"; await updateDoc(doc(db, currentScope, editId), data); cancelEdit(); }
+            else { data.status = isNotReported ? "Not Reported" : "New"; data.createdAt = serverTimestamp(); await addDoc(collection(db, currentScope), data); }
             document.getElementById('finding-form').reset();
         });
 
@@ -306,46 +276,48 @@
             document.getElementById('not-reported-toggle').checked = (bug.status === "Not Reported");
             updateEditUI();
         };
-
         function updateEditUI() {
             const isEditing = !!document.getElementById('edit-id').value;
             document.getElementById('form-title').innerText = isEditing ? "Editing Report" : "New Finding";
             document.getElementById('btn-submit').innerText = isEditing ? "Update Cloud" : "Sync Finding";
             document.getElementById('btn-cancel-edit').classList.toggle('hidden', !isEditing);
         }
-
-        window.cancelEdit = () => {
-            document.getElementById('edit-id').value = "";
-            document.getElementById('finding-form').reset();
-            updateEditUI();
-        };
+        window.cancelEdit = () => { document.getElementById('edit-id').value = ""; document.getElementById('finding-form').reset(); updateEditUI(); };
         document.getElementById('btn-cancel-edit').addEventListener('click', cancelEdit);
-
-        window.deleteBug = async (id) => {
-            if (confirm("Delete permanently?")) await deleteDoc(doc(db, currentScope, id));
-        };
-
+        window.deleteBug = async (id) => { if (confirm("Delete permanently?")) await deleteDoc(doc(db, currentScope, id)); };
         window.updateStatus = async (id, s) => { await updateDoc(doc(db, currentScope, id), { status: s }); };
 
+        function updateStats() {
+            const stats = { total: currentBugs.length, reported: 0, critical: 0, high: 0, medium: 0, lowInfo: 0, hof: 0, certs: 0 };
+            currentBugs.forEach(b => {
+                if (b.status !== 'Not Reported' && b.status !== 'No Response') stats.reported++;
+                if (b.severity === 'Critical') stats.critical++;
+                else if (b.severity === 'High') stats.high++;
+                else if (b.severity === 'Medium') stats.medium++;
+                else stats.lowInfo++;
+                if (b.hallOfFame) stats.hof++;
+                if (b.certLink && b.certLink !== "") stats.certs++;
+            });
+            document.getElementById('stat-total').innerText = stats.total;
+            document.getElementById('stat-reported').innerText = stats.reported;
+            document.getElementById('stat-critical').innerText = stats.critical;
+            document.getElementById('stat-high').innerText = stats.high;
+            document.getElementById('stat-medium').innerText = stats.medium;
+            document.getElementById('stat-low-info').innerText = stats.lowInfo;
+            document.getElementById('stat-hof').innerText = stats.hof;
+            document.getElementById('stat-certs').innerText = stats.certs;
+        }
+
         function renderTable() {
+            updateStats();
             const search = document.getElementById('search-bar').value.toLowerCase();
             const statusFilt = document.getElementById('filter-status').value;
             const severityFilt = document.getElementById('filter-severity').value;
-
             document.getElementById('vuln-table-body').innerHTML = currentBugs
                 .filter(b => {
                     const matchesSearch = b.program.toLowerCase().includes(search) || b.domain.toLowerCase().includes(search);
                     const matchesSeverity = severityFilt === 'All' || b.severity === severityFilt;
-                    
-                    let matchesStatus = true;
-                    if (statusFilt === 'Reported') {
-                        matchesStatus = (b.status !== 'Not Reported');
-                    } else if (statusFilt === 'No Response') {
-                        matchesStatus = (b.status === 'No Response');
-                    } else if (statusFilt !== 'All') {
-                        matchesStatus = (b.status === statusFilt);
-                    }
-                    
+                    let matchesStatus = (statusFilt === 'Reported') ? (b.status !== 'Not Reported') : (statusFilt === 'No Response' ? (b.status === 'No Response') : (statusFilt === 'All' || b.status === statusFilt));
                     return matchesSearch && matchesSeverity && matchesStatus;
                 })
                 .map(b => `
@@ -359,11 +331,8 @@
                             <div class="text-gray-200 text-sm font-semibold mb-1">${b.type}</div>
                             <div class="flex flex-wrap gap-2 mb-1">
                                 <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-800 border border-gray-700 uppercase">${b.severity}</span>
-                                
                                 ${b.poc ? `<a href="${b.poc}" target="_blank" class="text-[9px] text-red-400 flex items-center gap-1 bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20 hover:bg-red-500/20"><i class="fas fa-link"></i> POC</a>` : ''}
-                                
                                 ${b.hofSS ? `<a href="${b.hofSS}" target="_blank" class="text-[9px] text-yellow-400 flex items-center gap-1 bg-yellow-500/10 px-1.5 py-0.5 rounded border border-yellow-500/20 hover:bg-yellow-500/20"><i class="fas fa-image"></i> HOF_SS</a>` : ''}
-                                
                                 ${b.certLink ? `<a href="${b.certLink}" target="_blank" class="text-[9px] text-blue-400 flex items-center gap-1 bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20 hover:bg-blue-500/20"><i class="fas fa-certificate"></i> CERT</a>` : ''}
                             </div>
                             <div class="text-[10px] text-gray-400 italic line-clamp-1">${b.impact || ''}</div>
@@ -396,16 +365,10 @@
                     </tr>
                 `).join('');
         }
-
-        window.downloadPDF = () => {
-            const element = document.getElementById('pdf-content');
-            html2pdf().set({ margin: 0.5, filename: `MSCMKN_${currentScope}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { orientation: 'landscape' }}).from(element).save();
-        };
-
+        window.downloadPDF = () => { const element = document.getElementById('pdf-content'); html2pdf().set({ margin: 0.5, filename: `MSCMKN_${currentScope}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { orientation: 'landscape' }}).from(element).save(); };
         document.getElementById('search-bar').addEventListener('input', renderTable);
         document.getElementById('filter-status').addEventListener('change', renderTable);
         document.getElementById('filter-severity').addEventListener('change', renderTable);
     </script>
 </body>
 </html>
-
